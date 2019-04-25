@@ -23,5 +23,5 @@ Press + to exit to homebrew menu.
 
 
 Thanks/Credit to:  
-Dontwait00 - nXDownload for download functions    
-https://github.com/zserge/jsmn for JSON library
+https://github.com/Dontwait00/nXDownload for download functions    
+https://github.com/zserge/jsmn for JSON library   
