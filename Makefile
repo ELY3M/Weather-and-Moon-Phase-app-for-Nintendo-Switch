@@ -61,7 +61,7 @@ LIBS	:=  -lcurl -lmbedtls -lmbedx509 -lmbedcrypto \
 			-lpng -lz -ljpeg \
 			-lglad -lEGL -lglapi -ldrm_nouveau -lstdc++ \
 			-lvorbisidec -logg -lmpg123 -lmodplug \
-			-lnx -lm -lfreetype -lbz2
+			-lnx -lm -lfreetype -lbz2 -lwebp
 
 #---------------------------------------------------------------------------------
 # list of directories containing libraries, this must be the top level containing

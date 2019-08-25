@@ -1,0 +1,1 @@
+<script language='javascript'>window.location.href='https://forecast.weather.gov/MapClick.php?zoneid=MNZ087&zflg=1'</script>
