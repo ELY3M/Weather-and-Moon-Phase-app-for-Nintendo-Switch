@@ -1,6 +1,7 @@
 git.txt
 /Release
 Release.7z
+Release.zip
 /build
 *.elf
 *.nso
