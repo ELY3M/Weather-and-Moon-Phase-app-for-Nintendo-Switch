@@ -30,6 +30,7 @@ ELY M.
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
 
+#include "download.h"
 #include "jsmn.h"
 #include "moon.h"
 
@@ -58,10 +59,10 @@ SDL_Surface* weatherImage;
 SDL_Texture* weatherTexture;
 
 
-char weathertemp[256] = "00°F";
-char weathericon[256] = "romfs:/gfx/unknown.png";
-char weathertext[256] = "unknown";
-char weatherlocation[256] = "unknown location";
+char weathertemp[512] = "00°F";
+char weathericon[512] = "romfs:/gfx/unknown.png";
+char weathertext[512] = "unknown";
+char weatherlocation[512] = "unknown location";
 
 double moonage = 0.0;
 char moonicon[256] = "romfs:/gfx/moon24.png";
@@ -204,6 +205,27 @@ char *Clock(void) {
 	
 }
 
+char * removeSpaces(char *string)
+{
+    // non_space_count to keep the frequency of non space characters
+    int non_space_count = 0;
+ 
+    //Traverse a string and if it is non space character then, place it at index non_space_count
+    for (int i = 0; string[i] != '\0'; i++)
+    {
+        if (string[i] != ' ')
+        {
+            string[non_space_count] = string[i];
+            non_space_count++;//non_space_count incremented
+        }   
+		
+    }
+    
+    //Finally placing final character at the string end
+    string[non_space_count] = '\0';
+    return string;
+}
+
 static bool	setMyGPS(void)
 {
 	FILE		*fp = NULL;
@@ -264,6 +286,10 @@ char *readMyGPS(void)
 		nbytes = fread(buffer, sizeof(char), st.st_size, fp);
 		if (nbytes > 0) {
 			//mygps = buffer;
+			//remove spaces
+			//printf("readMyGPS(): trying to remove spaces\n");
+			buffer = removeSpaces(buffer);
+			strtok(buffer, "\n");
 		}
 		fclose(fp);
 	}
@@ -373,7 +399,7 @@ void *getjson(char *JsonString) {
 		
 	
 	//SDL_RenderPresent(renderer);
-	return;
+	return JsonString;
 }
 
 
@@ -424,8 +450,6 @@ char *readWeather(void)
 }
 
 
-
-
 int main()
 {
 
@@ -436,17 +460,15 @@ int main()
    	char *lat = NULL;
 	
 	
-	
-	
 	SDL_Init(SDL_INIT_EVERYTHING);
 	IMG_Init(IMG_INIT_PNG);
 	TTF_Init();
 	romfsInit();
 	curlInit();
 
-
-
-
+	padConfigureInput(1, HidNpadStyleSet_NpadStandard);
+	PadState pad;
+	padInitializeDefault(&pad);
 
 	// Create an SDL window & renderer
 	window = SDL_CreateWindow("Main-Window", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 0, 0, SDL_WINDOW_FULLSCREEN_DESKTOP);
@@ -471,10 +493,8 @@ int main()
 	while (appletMainLoop())
 	{
 	
-	
-		hidScanInput();
-		kDown = hidKeysDown(CONTROLLER_P1_AUTO);
-
+        padUpdate(&pad);
+        u64 kDown = padGetButtonsDown(&pad);
 
 		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 		//Clear
@@ -523,8 +543,8 @@ int main()
 		mygps = readMyGPS();
 	    lat = strtok(mygps, ",");
    	    lon = strtok(NULL, ",");	
-		char gpsstring[100]; 
-		snprintf(gpsstring, 100, "My GPS: %s,%s", lat,lon);
+		char gpsstring[256]; 
+		snprintf(gpsstring, 256, "My GPS: %s,%s", lat,lon);
 		SDL_DrawTextf(renderer, font, SCREEN_WIDTH / 2, 43, CYAN, gpsstring);
 		
 
@@ -551,29 +571,29 @@ int main()
 	
 		
 		
-
-		if (kDown & KEY_MINUS)  { 
+		if (kDown & HidNpadButton_Minus)  { 
 		setMyGPS();	
 		}
 
 
-		if (kDown & KEY_A)  { 
+		if (kDown & HidNpadButton_A)  { 
 		FILE_TRANSFER_HTTP(lat, lon); 
 		sleep(1); 
 		readWeather(); 
+
 		}
 	
 		
-		if (kDown & KEY_X)  { 
+		if (kDown & HidNpadButton_X)  { 
 		FILE_TRANSFER_HTTP(lat, lon); 
 		sleep(1);
 		readWeather(); 
-		}	
 		
 
+		}	
 		
-		if (kDown & KEY_PLUS) { break; } 
-		
+		if (kDown & HidNpadButton_Plus) { break; } 
+				
 		
 		SDL_RenderPresent(renderer);
 		
