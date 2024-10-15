@@ -332,13 +332,13 @@ void *getjson(char *JsonString) {
 	r = jsmn_parse(&p, JsonString, strlen(JsonString), t, sizeof(t)/sizeof(t[0]));
 	if (r < 0) {
 		//printf("Failed to parse JSON: %d\n", r);
-		return;
+		return 0;
 	}
 
 	/* Assume the top-level element is an object */
 	if (r < 1 || t[0].type != JSMN_OBJECT) {
 		//printf("Object expected\n");
-		return;
+		return 0;
 	}
 
 
