@@ -28,3 +28,4 @@ Thanks/Credit to:
 https://github.com/switchbrew for Switch dev stuff
 https://github.com/Dontwait00/nXDownload for download functions   
 https://github.com/zserge/jsmn for JSON library
+John Walker http://www.fourmilab.ch/ for Moon codes. 
