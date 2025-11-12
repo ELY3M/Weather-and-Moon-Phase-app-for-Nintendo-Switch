@@ -462,6 +462,7 @@ double getmoonage(void)
 	
 	double pdatetime;
 	double pphase, mage, dist, sudist;
+	
 	char s[64];
 
 
@@ -472,11 +473,8 @@ double getmoonage(void)
 
 	pdatetime = jtime(tm);
 
-
 	double pangle = phase(pdatetime, &pphase, &mage, &dist, &sudist);
 	
-
-
 
 	return(mage);
 }

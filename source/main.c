@@ -59,13 +59,13 @@ SDL_Surface* weatherImage;
 SDL_Texture* weatherTexture;
 
 
-char weathertemp[512] = "00°F";
-char weathericon[512] = "romfs:/gfx/unknown.png";
-char weathertext[512] = "unknown";
-char weatherlocation[512] = "unknown location";
+char *weathertemp = "00°F";
+char *weathericon = "romfs:/gfx/unknown.png";
+char *weathertext = "unknown";
+char *weatherlocation = "unknown location";
 
 double moonage = 0.0;
-char moonicon[256] = "romfs:/gfx/moon24.png";
+char *moonicon = "romfs:/gfx/moon24.png";
 
 
 static inline SDL_Color SDL_MakeColour(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
@@ -172,7 +172,7 @@ char *Clock(void) {
 	
 	
 		//Clock
-		char clock[256] = "time";
+		char *clock = "time";
 		const char* ampm = "AM";
 		time_t unixTime = time(NULL);
 		//struct tm* timeStruct = gmtime((const time_t *)&unixTime);
@@ -322,10 +322,10 @@ void *getjson(char *JsonString) {
 	jsmn_parser p;
 	jsmntok_t t[256]; /* We expect no more than 128 tokens */
 	
-	char gettemp[256];
-	char getweather[256]; 
-	char getweatherimage[256];  
-	char getlocation[256]; 
+	char *gettemp = "";
+	char *getweather = ""; 
+	char *getweatherimage = "";  
+	char *getlocation = ""; 
 	
 
 	jsmn_init(&p);
@@ -454,7 +454,7 @@ int main()
 {
 
 
-	char *myclock = NULL;
+	//char *myclock = NULL;
 	char *mygps = NULL;
 	char *lon = NULL;
    	char *lat = NULL;
