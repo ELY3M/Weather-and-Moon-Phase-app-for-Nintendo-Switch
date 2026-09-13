@@ -1,12 +1,16 @@
-name: Build
+name: Build Nro
 
 on:
   push:
   pull_request:
+  workflow_dispatch:
+  workflow_call:
+
+permissions: write-all
 
 jobs:
   build:
-    name: Test build
+    name: Build
     runs-on: ubuntu-latest
     container:
       image: 'devkitpro/devkita64'
@@ -18,7 +22,7 @@ jobs:
           persist-credentials: false
 
       - name: build
-        run: make -j2
+        run: make -j$(nproc)
 
       - name: test
         run: ls -la
@@ -30,5 +34,5 @@ jobs:
           prerelease: false
           draft: false
           body: ${{ github.event.head_commit.message }}
-          files: Weather-and-Moon-Phase-app-for-Nintendo-Switch.nro, weather-gps.txt
+          files: ${{ github.event.repository.name }}.nro
           name: "Switch Release #${{ github.run_number }}"
